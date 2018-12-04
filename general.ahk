@@ -1,10 +1,12 @@
 ﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
-; #Warn  ; Enable warnings to assist with detecting common errors.
+;#Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory
+SetWorkingDir %A_ScriptDir%\tmp  ; Ensures a consistent starting directory
 
-quickCommandtoggle:=false
+; Environment Variables
+quickCommandtoggle:=false ; Used to toggle Quick Commands Menu
 
+; Displays hardcoded menu of possible options
 #`::
 	if quickCommandtoggle
 	{
@@ -17,7 +19,8 @@ quickCommandtoggle:=false
 		quickCommandtoggle:=true
 	}
 	return
-	
+
+; Toggles Audio input between sound devices named "Headphones" and "External Speakers"	
 #1::
 	Progress Off
 	
@@ -36,9 +39,11 @@ quickCommandtoggle:=false
 
 	return
 	
+; Currently undefined	
 #2::
 return
 
+; Draws the Quick Commands Display Menu, with a timeout
 drawQuickCommandsDisplay:
 	Gui, destroy
 	
@@ -60,6 +65,7 @@ drawQuickCommandsDisplay:
 	SetTimer, destroyQuickCommandsDisplay, 8000
 	return
 	
+; Teardown the Quick Commands Display Menu and resets the toggle env var
 destroyQuickCommandsDisplay:
 	SetTimer, destroyQuickCommandsDisplay, off
 	Gui, destroy
@@ -68,7 +74,7 @@ destroyQuickCommandsDisplay:
 	return
 
 	
-; Display sound toggle GUI
+; Display sound toggle menu
 soundToggleBox(Device)
 {
 	Gui, destroy
@@ -83,6 +89,8 @@ soundToggleBox(Device)
 	
 	SetTimer,soundToggleClose, 2000
 }
+
+; Teardown the sound toggle menu
 soundToggleClose:
     SetTimer,soundToggleClose, off
     Gui, destroy
