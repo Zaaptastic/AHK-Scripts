@@ -4,7 +4,7 @@
 /* JSON parsing library written by lordkrandel @ autohotkey.com forums
  * Source: https://autohotkey.com/board/topic/61328-lib-json-ahk-l-json-object/
  *
- * Supported functions: JSON_from(jsonString) and JSON_load("fileName.json")
+ * Supported functions: createJsonFromString(jsonString), saveJsonToFile(jsonObject, "fileName.json") and loadJsonToFile("fileName.json")
  * Example jsonString: 
  *	( ltrim join 
  *		{
@@ -18,7 +18,7 @@
  *	)
  *
  * Example access:
- *  $$ := JSON_load("fileName.json")
+ *  $$ := loadJsonToFile("fileName.json")
  *  $("1")
  *  $("a.a1")
  */
@@ -63,7 +63,7 @@ $(path, val = "") {
 }
 
 //  Save JSON string to file                                              //
-JSON_save(obj, filename, spacing=35, block="    ", level=1) {
+saveJsonToFile(obj, filename, spacing=35, block="    ", level=1) {
 
     file         := FileOpen(filename, "w")
     jsonString   := JSON_to(obj, spacing, block, level) "\n"
@@ -77,13 +77,13 @@ JSON_save(obj, filename, spacing=35, block="    ", level=1) {
 }
 
 //  Load JSON string from file                                            //
-JSON_load(filename) {
+loadJsonToFile(filename) {
     file := FileOpen(filename, "r")
     jsonString := file.read()
     file.close()
     if (jsonString == "")
         JSON_error("No file found, or blank file.")
-    return JSON_from(jsonString)
+    return createJsonFromString(jsonString)
 }
 
 //  Error handling                                                        //
@@ -238,7 +238,7 @@ JSON_reduce_object(c){
 
 
 // Main parsing method                                                                      //
-JSON_from(s){
+createJsonFromString(s){
 
     ret     := Object()
     pos     := 1
