@@ -9,8 +9,8 @@ SetWorkingDir %A_ScriptDir%\tmp  ; Ensures a consistent starting directory
 ; Environment Variables
 quickCommandtoggle:=false ; Used to toggle Quick Commands Menu
 SysGet, MonitorDimensions, MonitorWorkArea ; Used to obtain monitor width and length in pixels
-bufferZoneX := MonitorDimensionsRight * .05 ; Used to leave some space when moving windows
-bufferZoneY := MonitorDimensionsBottom * .05
+bufferZoneX := Floor(MonitorDimensionsRight * .05) ; Used to leave some space when moving windows
+bufferZoneY := Floor(MonitorDimensionsBottom * .05)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Displays hardcoded menu of possible options
@@ -88,7 +88,7 @@ return
 	
 	if (currentY == 0) {
 		return
-	} else if (currentY == bufferZoneY) {
+	} else if (currentY <= bufferZoneY) {
 		WinMove, A, , currentX, 0, currentW, currentH
 	} else {
 		WinMove, A, , currentX, bufferZoneY, currentW, currentH
@@ -101,12 +101,11 @@ return
 	
 	if (currentY == newYCoord) {
 		return
-	} else if (currentY == newYCoord - bufferZoneY) {
+	} else if (currentY >= newYCoord - bufferZoneY) {
 		WinMove, A, , currentX, newYCoord, currentW, currentH
 	} else {
 		WinMove, A, , currentX, newYCoord - bufferZoneY, currentW, currentH
 	}	
-
 	return
 
 	
