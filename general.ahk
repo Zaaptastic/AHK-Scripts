@@ -9,6 +9,8 @@ SetWorkingDir %A_ScriptDir%\tmp  ; Ensures a consistent starting directory
 ; Environment Variables
 quickCommandtoggle:=false ; Used to toggle Quick Commands Menu
 SysGet, MonitorDimensions, MonitorWorkArea ; Used to obtain monitor width and length in pixels
+bufferZoneX := MonitorDimensionsRight * .05 ; Used to leave some space when moving windows
+bufferZoneY := MonitorDimensionsBottom * .05
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Displays hardcoded menu of possible options
@@ -59,27 +61,44 @@ return
 #Left::
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	
-	WinMove, A, , 0, currentY, currentW, currentH
+	if (currentX == bufferZoneX) {
+		WinMove, A, , 0, currentY, currentW, currentH
+	} else {
+		WinMove, A, , bufferZoneX, currentY, currentW, currentH
+	}
 	return
 	
 #Right::
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	newXCoord := MonitorDimensionsRight - currentW
 	
-	WinMove, A, , newXCoord, currentY, currentW, currentH
+	if (currentX == newXCoord - bufferZoneX) {
+		WinMove, A, , newXCoord, currentY, currentW, currentH
+	} else {
+		WinMove, A, , newXCoord - bufferZoneX, currentY, currentW, currentH
+	}	
 	return
 	
 #Up::
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	
-	WinMove, A, , currentX, 0, currentW, currentH
+	if (currentY == bufferZoneY) {
+		WinMove, A, , currentX, 0, currentW, currentH
+	} else {
+		WinMove, A, , currentX, bufferZoneY, currentW, currentH
+	}
 	return	
 	
 #Down::
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	newYCoord := MonitorDimensionsBottom - currentH
 	
-	WinMove, A, , currentX, newYCoord, currentW, currentH
+	if (currentY == newYCoord - bufferZoneY) {
+		WinMove, A, , currentX, newYCoord, currentW, currentH
+	} else {
+		WinMove, A, , currentX, newYCoord - bufferZoneY, currentW, currentH
+	}	
+
 	return
 
 	
