@@ -137,3 +137,12 @@ soundToggleClose:
     SetTimer,soundToggleClose, off
     Gui, destroy
 	Return
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Application-Specific Scripts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
+;;;;;;;;;;;;;;;;;;;;;;
+; Console applications
+;;;;;;;;;;;;;;;;;;;;;;
+#IfWinActive ahk_class ConsoleWindowClass
+^v::SendInput {RAW}%ClipBoard%        ; Ctrl-V paste
