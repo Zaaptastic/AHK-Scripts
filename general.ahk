@@ -2,6 +2,9 @@
 ;#Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%\tmp  ; Ensures a consistent starting directory
+#include %A_ScriptDir%\lib\jsonParser.ahk
+#EscapeChar `
+#CommentFlag ;
 
 ; Environment Variables
 quickCommandtoggle:=false ; Used to toggle Quick Commands Menu
