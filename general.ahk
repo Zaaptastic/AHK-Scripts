@@ -6,7 +6,9 @@ SetWorkingDir %A_ScriptDir%\tmp  ; Ensures a consistent starting directory
 ; Environment Variables
 quickCommandtoggle:=false ; Used to toggle Quick Commands Menu
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Displays hardcoded menu of possible options
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 #`::
 	if quickCommandtoggle
 	{
@@ -20,12 +22,14 @@ quickCommandtoggle:=false ; Used to toggle Quick Commands Menu
 	}
 	return
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Toggles Audio input between sound devices named "Headphones" and "External Speakers"	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 #1::
 	Progress Off
 	
 	; Toggles between audio output
-	toggle:=!toggle ; This toggles the variable between true/false
+	toggle := !toggle ; This toggles the variable between true/false
 	if toggle
 	{
 		Run nircmd setdefaultsounddevice "Headphones"
@@ -38,11 +42,49 @@ quickCommandtoggle:=false ; Used to toggle Quick Commands Menu
 	}
 
 	return
-	
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Currently undefined	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 #2::
 return
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; The following commands manipulate window placement
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#Left::
+	WinGetPos, currentX, currentY, currentW, currentH, A
+	
+	WinMove, A, , 0, currentY, currentW, currentH
+	return
+	
+#Right::
+	SysGet, MonitorDimensions, MonitorWorkArea
+	WinGetPos, currentX, currentY, currentW, currentH, A
+	newXCoord := MonitorDimensionsRight - currentW
+	
+	WinMove, A, , newXCoord, currentY, currentW, currentH
+	return
+	
+#Up::
+	WinGetPos, currentX, currentY, currentW, currentH, A
+	
+	WinMove, A, , currentX, 0, currentW, currentH
+	return	
+	
+#Down::
+	SysGet, MonitorDimensions, MonitorWorkArea
+	WinGetPos, currentX, currentY, currentW, currentH, A
+	newYCoord := MonitorDimensionsBottom - currentH
+	
+	WinMove, A, , currentX, newYCoord, currentW, currentH
+	return
+
+	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Utility Methods and Functions
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
+	
 ; Draws the Quick Commands Display Menu, with a timeout
 drawQuickCommandsDisplay:
 	Gui, destroy
@@ -55,14 +97,14 @@ drawQuickCommandsDisplay:
 	Gui +LastFound +AlwaysOnTop -Caption +ToolWindow  ; +ToolWindow avoids a taskbar button and an alt-tab menu item.
 	Gui, Color, %CustomColor%
 	Gui, Font, s28 ; Set a large font size (32-point).
-	Gui, Add, Text, cdarkblue, [1 - Toggle Audio] [2 - Unassigned]
+	Gui, Add, Text, cdarkblue, [Arrows - Move Active Window][1 - Toggle Audio] [2 - Unassigned]
 	
 	; Make all pixels of this color transparent and make the text itself translucent:
 	WinSet, TransColor, %CustomColor% 175
 	
 	Gui, Show, h%OsdHeight% y%BottomCoord% NoActivate  ; NoActivate avoids deactivating the currently active window.
 	
-	SetTimer, destroyQuickCommandsDisplay, 8000
+	SetTimer, destroyQuickCommandsDisplay, 6000
 	return
 	
 ; Teardown the Quick Commands Display Menu and resets the toggle env var
@@ -94,4 +136,4 @@ soundToggleBox(Device)
 soundToggleClose:
     SetTimer,soundToggleClose, off
     Gui, destroy
-Return
+	Return
