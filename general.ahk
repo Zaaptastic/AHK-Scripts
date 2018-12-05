@@ -8,6 +8,7 @@ SetWorkingDir %A_ScriptDir%\tmp  ; Ensures a consistent starting directory
 
 ; Environment Variables
 quickCommandtoggle:=false ; Used to toggle Quick Commands Menu
+SysGet, MonitorDimensions, MonitorWorkArea ; Used to obtain monitor width and length in pixels
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Displays hardcoded menu of possible options
@@ -62,7 +63,6 @@ return
 	return
 	
 #Right::
-	SysGet, MonitorDimensions, MonitorWorkArea
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	newXCoord := MonitorDimensionsRight - currentW
 	
@@ -76,7 +76,6 @@ return
 	return	
 	
 #Down::
-	SysGet, MonitorDimensions, MonitorWorkArea
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	newYCoord := MonitorDimensionsBottom - currentH
 	
@@ -92,7 +91,6 @@ return
 drawQuickCommandsDisplay:
 	Gui, destroy
 	
-	SysGet, MonitorDimensions, MonitorWorkArea
 	OsdHeight := 100
 	BottomCoord := MonitorDimensionsBottom - (OsdHeight * 1.5)
 	
@@ -143,7 +141,8 @@ soundToggleClose:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Application-Specific Scripts
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;;;;;;;;;;;;;;;;;;;;
 ; Console applications
 ;;;;;;;;;;;;;;;;;;;;;;
