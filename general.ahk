@@ -33,8 +33,6 @@ appDimensionFilePath := "applicationDimensions.txt"
 ; Toggles Audio input between sound devices named "Headphones" and "External Speakers"	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 #1::
-	Progress Off
-	
 	; Toggles between audio output
 	toggle := !toggle ; This toggles the variable between true/false
 	if toggle
@@ -57,8 +55,8 @@ appDimensionFilePath := "applicationDimensions.txt"
 	WinGet, currentProcess, ProcessName, A
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	
-	apps := readFromFile(appDimensionFilePath)
-	appDimensions := StrSplit(apps[currentProcess], ",")
+	apps := readFromFileV2(appDimensionFilePath)
+	appDimensions := StrSplit(apps[currentProcess][1], ",")
 	appWidth := appDimensions[1]
 	appHeight := appDimensions[2]
 
@@ -71,9 +69,21 @@ appDimensionFilePath := "applicationDimensions.txt"
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	appDimensions := currentW . "," . currentH
 	
-	apps := readFromFile(appDimensionFilePath)
-	apps[currentProcess] := appDimensions
-	writeToFile(apps, appDimensionFilePath)
+	apps := readFromFileV2(appDimensionFilePath)
+	oldAppDimensions := apps[currentProcess]
+	newAppDimensions := []
+	
+	;Copy over existing data
+	for i,e in oldAppDimensions
+	{
+		; Don't copy duplicates
+		if (e != appDimensions)
+			newAppDimensions.Push(e)
+	}
+	newAppDimensions.Push(appDimensions)
+	
+	apps[currentProcess] := newAppDimensions
+	writeToFileV2(apps,appDimensionFilePath)
 	
 	return
 
@@ -192,6 +202,39 @@ writeToFile(obj, filepath)
 	FileAppend, %s%, %filepath%
 }
 
+; Writes an Object to a filepath
+writeToFileV2(obj, filepath)
+{
+	; First delete the existing filepath
+	FileDelete, %filepath%
+
+	s := ""
+	for k, v in obj
+	{
+	    ; Create a new line
+        if (s != "")
+			s .= "`n"
+		
+		; Add application name (key)
+		s .= k
+		
+		; Add delimiter
+		s .= "["
+		
+		; Add dimension values array (value)
+		for i, e in v
+		{
+			if (i != 1)
+				s.= ";"
+			s .= v[i]
+		}
+		
+		; Add delimiter
+		s .= "]"
+	}
+	FileAppend, %s%, %filepath%
+}
+
 ; Reads an Object from a filepath
 readFromFile(filepath)
 {
@@ -204,6 +247,28 @@ readFromFile(filepath)
 		appWidth := lineTokens[2]
 		appHeight := lineTokens[3]
 		appDimensions := appWidth . "," . appHeight
+		
+		obj[appProcess] := appDimensions
+	}
+	
+	return obj
+}
+
+readFromFileV2(filepath)
+{
+	obj := Object()
+
+	Loop, Read, %filepath%
+	{
+		lineTokens := StrSplit(A_LoopReadLine,"[")
+		appProcess := lineTokens[1]
+		appDimensionsString := lineTokens[2]
+		appDimensionsString := SubStr(appDimensionsString, 1, -1)
+		
+		appDimensions := StrSplit(appDimensionsString,";")
+		;appWidth := lineTokens[2]
+		;appHeight := lineTokens[3]
+		;appDimensions := appWidth . "," . appHeight
 		
 		obj[appProcess] := appDimensions
 	}
