@@ -11,6 +11,7 @@ quickCommandtoggle:=false ; Used to toggle Quick Commands Menu
 SysGet, MonitorDimensions, MonitorWorkArea ; Used to obtain monitor width and height in pixels
 bufferZoneX := Floor(MonitorDimensionsRight * .05) ; Used to leave some space when moving windows
 bufferZoneY := Floor(MonitorDimensionsBottom * .05)
+appDimensionFilePath := "applicationDimensions.txt"
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Displays hardcoded menu of possible options
@@ -56,7 +57,7 @@ bufferZoneY := Floor(MonitorDimensionsBottom * .05)
 	WinGet, currentProcess, ProcessName, A
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	
-	apps := readFromFile("test.txt")
+	apps := readFromFile(appDimensionFilePath)
 	appDimensions := StrSplit(apps[currentProcess], ",")
 	appWidth := appDimensions[1]
 	appHeight := appDimensions[2]
@@ -70,9 +71,9 @@ bufferZoneY := Floor(MonitorDimensionsBottom * .05)
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	appDimensions := currentW . "," . currentH
 	
-	apps := readFromFile("test.txt")
+	apps := readFromFile(appDimensionFilePath)
 	apps[currentProcess] := appDimensions
-	writeToFile(apps, "test.txt")
+	writeToFile(apps, appDimensionFilePath)
 	
 	return
 
