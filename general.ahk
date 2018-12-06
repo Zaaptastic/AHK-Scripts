@@ -8,7 +8,7 @@ SetWorkingDir %A_ScriptDir%\tmp  ; Ensures a consistent starting directory
 
 ; Environment Variables
 quickCommandtoggle:=false ; Used to toggle Quick Commands Menu
-SysGet, MonitorDimensions, MonitorWorkArea ; Used to obtain monitor width and length in pixels
+SysGet, MonitorDimensions, MonitorWorkArea ; Used to obtain monitor width and height in pixels
 bufferZoneX := Floor(MonitorDimensionsRight * .05) ; Used to leave some space when moving windows
 bufferZoneY := Floor(MonitorDimensionsBottom * .05)
 
@@ -49,11 +49,32 @@ bufferZoneY := Floor(MonitorDimensionsBottom * .05)
 
 	return
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; Currently undefined	
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Store/Restore Window Dimensions	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 #2::
-return
+	WinGet, currentProcess, ProcessName, A
+	WinGetPos, currentX, currentY, currentW, currentH, A
+	
+	apps := readFromFile("test.txt")
+	appDimensions := StrSplit(apps[currentProcess], ",")
+	appWidth := appDimensions[1]
+	appHeight := appDimensions[2]
+
+	WinMove, A, , currentX, currentY, appWidth, appHeight
+
+	return
+	
+#^2::
+	WinGet, currentProcess, ProcessName, A
+	WinGetPos, currentX, currentY, currentW, currentH, A
+	appDimensions := currentW . "," . currentH
+	
+	apps := readFromFile("test.txt")
+	apps[currentProcess] := appDimensions
+	writeToFile(apps, "test.txt")
+	
+	return
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; The following commands manipulate window placement
@@ -113,6 +134,50 @@ return
 ; Utility Methods and Functions
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
 	
+; Writes an Object to a filepath
+writeToFile(obj, filepath)
+{
+	; First delete the existing filepath
+	FileDelete, %filepath%
+
+	s := ""
+	for k, v in obj
+	{
+	    ; Create a new line
+        if (s != "")
+			s .= "`n"
+		
+		; Add application name (key)
+		s .= k
+		
+		; Add delimiter
+		s .= ","
+		
+		; Add dimension value (value)
+		s .= v
+	}
+	FileAppend, %s%, %filepath%
+}
+
+; Reads an Object from a filepath
+readFromFile(filepath)
+{
+	obj := Object()
+
+	Loop, Read, %filepath%
+	{
+		lineTokens := StrSplit(A_LoopReadLine,",")
+		appProcess := lineTokens[1]
+		appWidth := lineTokens[2]
+		appHeight := lineTokens[3]
+		appDimensions := appWidth . "," . appHeight
+		
+		obj[appProcess] := appDimensions
+	}
+	
+	return obj
+}
+	
 ; Draws the Quick Commands Display Menu, with a timeout
 drawQuickCommandsDisplay:
 	Gui, destroy
@@ -124,7 +189,7 @@ drawQuickCommandsDisplay:
 	Gui +LastFound +AlwaysOnTop -Caption +ToolWindow  ; +ToolWindow avoids a taskbar button and an alt-tab menu item.
 	Gui, Color, %CustomColor%
 	Gui, Font, s28 ; Set a large font size (32-point).
-	Gui, Add, Text, cdarkblue, [Arrows - Move Active Window][1 - Toggle Audio] [2 - Unassigned]
+	Gui, Add, Text, cdarkblue, [Arrows - Move Active Window][1 - Toggle Audio] [2 - Re/Store Window Dims]
 	
 	; Make all pixels of this color transparent and make the text itself translucent:
 	WinSet, TransColor, %CustomColor% 175
