@@ -83,14 +83,21 @@ appDimensionFilePath := "applicationDimensions.txt"
 #Left::
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	
+	WinMove, A, , 0, currentY, currentW, currentH
+	
+	return
+	
+#^Left::
+	WinGetPos, currentX, currentY, currentW, currentH, A
+	
 	if (currentX == 0) {
 		return
-	} else if (currentX == bufferZoneX) {
+	} else if (currentX <= bufferZoneX) {
 		WinMove, A, , 0, currentY, currentW, currentH
 	} else {
 		WinMove, A, , bufferZoneX, currentY, currentW, currentH
 	}
-	return
+	return	
 	
 #Right::
 	WinGetPos, currentX, currentY, currentW, currentH, A
@@ -105,6 +112,19 @@ appDimensionFilePath := "applicationDimensions.txt"
 	}	
 	return
 	
+#^Right::
+	WinGetPos, currentX, currentY, currentW, currentH, A
+	newXCoord := MonitorDimensionsRight - currentW
+	
+	if (currentX == newXCoord) {
+		return
+	} else if (currentX >= newXCoord - bufferZoneX) {
+		WinMove, A, , newXCoord, currentY, currentW, currentH
+	} else {
+		WinMove, A, , newXCoord - bufferZoneX, currentY, currentW, currentH
+	}	
+	return	
+	
 #Up::
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	
@@ -117,7 +137,32 @@ appDimensionFilePath := "applicationDimensions.txt"
 	}
 	return	
 	
+#^Up::
+	WinGetPos, currentX, currentY, currentW, currentH, A
+	
+	if (currentY == 0) {
+		return
+	} else if (currentY <= bufferZoneY) {
+		WinMove, A, , currentX, 0, currentW, currentH
+	} else {
+		WinMove, A, , currentX, bufferZoneY, currentW, currentH
+	}
+	return	
+	
 #Down::
+	WinGetPos, currentX, currentY, currentW, currentH, A
+	newYCoord := MonitorDimensionsBottom - currentH
+	
+	if (currentY == newYCoord) {
+		return
+	} else if (currentY >= newYCoord - bufferZoneY) {
+		WinMove, A, , currentX, newYCoord, currentW, currentH
+	} else {
+		WinMove, A, , currentX, newYCoord - bufferZoneY, currentW, currentH
+	}	
+	return
+	
+#^Down::
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	newYCoord := MonitorDimensionsBottom - currentH
 	
