@@ -4,7 +4,8 @@
 /* JSON parsing library written by lordkrandel @ autohotkey.com forums
  * Source: https://autohotkey.com/board/topic/61328-lib-json-ahk-l-json-object/
  *
- * Supported functions: createJsonFromString(jsonString), saveJsonToFile(jsonObject, "fileName.json") and loadJsonToFile("fileName.json")
+ * Supported functions: createJsonFromString(jsonString), createStringFromJson(jsonObject),
+ * writeJsonToFile(jsonObject, "fileName.json") and readJsonFromFile("fileName.json")
  * Example jsonString: 
  *	( ltrim join 
  *		{
@@ -18,7 +19,7 @@
  *	)
  *
  * Example access:
- *  $$ := loadJsonToFile("fileName.json")
+ *  $$ := readJsonFromFile("fileName.json")
  *  $("1")
  *  $("a.a1")
  */
@@ -34,6 +35,8 @@ __json_init()
 
 
 // Simple access to global variable $$                                      //
+// TODO: It's really silly to use a global variable in a library function,  //
+// find a way to pass this in while respecting the Object() initialization  //
 $(path, val = "") {
 
     global $$
@@ -63,10 +66,10 @@ $(path, val = "") {
 }
 
 //  Save JSON string to file                                              //
-saveJsonToFile(obj, filename, spacing=35, block="    ", level=1) {
+writeJsonToFile(obj, filename, spacing=35, block="    ", level=1) {
 
     file         := FileOpen(filename, "w")
-    jsonString   := JSON_to(obj, spacing, block, level) "\n"
+    jsonString   := createStringFromJson(obj, spacing, block, level) "\n"
     bytesWritten := file.write(jsonString)
     file.close()
 
@@ -77,7 +80,7 @@ saveJsonToFile(obj, filename, spacing=35, block="    ", level=1) {
 }
 
 //  Load JSON string from file                                            //
-loadJsonToFile(filename) {
+readJsonFromFile(filename) {
     file := FileOpen(filename, "r")
     jsonString := file.read()
     file.close()
@@ -107,7 +110,7 @@ JSON_unescape(s){
 }
 
 // Turns an object to a JSON string                                      //
-JSON_to(obj, spacing = 50, block = "    ", level = "1" ) {
+createStringFromJson(obj, spacing = 50, block = "    ", level = "1" ) {
 
     s := ""
     for k, v in obj
@@ -130,7 +133,7 @@ JSON_to(obj, spacing = 50, block = "    ", level = "1" ) {
 
         // If object, do recursion         //
         if (isobject(v)) {
-            s .= JSON_to(v, spacing, block, level + 1 )
+            s .= createStringFromJson(v, spacing, block, level + 1 )
         } else {
  
             // LeftAlign the second column      //
