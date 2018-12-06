@@ -56,7 +56,12 @@ appDimensionFilePath := "applicationDimensions.txt"
 	WinGetPos, currentX, currentY, currentW, currentH, A
 	
 	apps := readFromFileV2(appDimensionFilePath)
-	appDimensions := StrSplit(apps[currentProcess][1], ",")
+	currentDimensions := currentW . "," . currentH
+	indexToUse := linearSearch(apps[currentProcess], currentDimensions) + 1
+	if (indexToUse > apps[currentProcess].MaxIndex())
+		indexToUse := 1
+	
+	appDimensions := StrSplit(apps[currentProcess][indexToUse], ",")
 	appWidth := appDimensions[1]
 	appHeight := appDimensions[2]
 
@@ -177,6 +182,18 @@ appDimensionFilePath := "applicationDimensions.txt"
 ; Utility Methods and Functions
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
 	
+; Simple linear search for a value in an array, if it exists, return index, otherwise 0
+; NB: AHK Arrays start at 1, idk why
+linearSearch(array, value)
+{
+	for i, e in array
+	{
+		if (e == value)
+			return i
+	}
+	return 0
+}
+	
 ; Writes an Object to a filepath
 writeToFile(obj, filepath)
 {
@@ -202,7 +219,7 @@ writeToFile(obj, filepath)
 	FileAppend, %s%, %filepath%
 }
 
-; Writes an Object to a filepath
+; Writes an Object to a filepath, allowing for an array as value
 writeToFileV2(obj, filepath)
 {
 	; First delete the existing filepath
@@ -254,6 +271,7 @@ readFromFile(filepath)
 	return obj
 }
 
+; Reads an Object from a filepath, assuming that the Object has array values
 readFromFileV2(filepath)
 {
 	obj := Object()
