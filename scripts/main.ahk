@@ -85,6 +85,12 @@ appDimensionFilePath := "applicationDimensions.txt"
 	bufferRight(MonitorDimensionsRight, bufferZoneX)
 
 	return	
+
+#!Left::
+#!Right::
+	centerHorizontal(MonitorDimensionsRight)
+
+	Return
 	
 #Up::
 	snapUp()
@@ -105,6 +111,12 @@ appDimensionFilePath := "applicationDimensions.txt"
 	bufferDown(MonitorDimensionsBottom, bufferZoneY)
 
 	return
+
+#!Up::
+#!Down::
+	centerVertical(MonitorDimensionsBottom)
+
+	Return
 
 	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

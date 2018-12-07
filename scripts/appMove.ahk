@@ -81,3 +81,23 @@ bufferDown(MonitorDimensionsBottom, bufferZoneY)
 		WinMove, A, , currentX, newYCoord - bufferZoneY, currentW, currentH
 	}	
 }
+
+centerHorizontal(MonitorDimensionsRight)
+{
+	WinGetPos, currentX, currentY, currentW, currentH, A
+
+	monitorMidpoint := MonitorDimensionsRight / 2
+	windowOffset := currentW / 2
+
+	WinMove, A, , monitorMidpoint - windowOffset, currentY, currentW, currentH
+}
+
+centerVertical(MonitorDimensionsBottom)
+{
+	WinGetPos, currentX, currentY, currentW, currentH, A
+
+	monitorMidpoint := MonitorDimensionsBottom / 2
+	windowOffset := currentH / 2
+
+	WinMove, A, , currentX, monitorMidpoint - windowOffset, currentW, currentH
+}
