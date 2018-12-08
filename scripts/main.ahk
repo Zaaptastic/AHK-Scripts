@@ -23,6 +23,9 @@ bufferZoneY := Floor(MonitorDimensionsBottom * .05)
 ; Filepath used to store application Dimensions
 appDimensionFilePath := "applicationDimensions.txt" 
 
+; List of Proccesses which already support Window Control commands
+processesWithExistingWindowControlSupport := ["chrome.exe", "sublime_text.exe"]
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Displays hardcoded menu of possible options
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -131,6 +134,22 @@ appDimensionFilePath := "applicationDimensions.txt"
 ;;;;;;;;;;;;;;;;;
 !Q::
 	closeApplication()
+	Return
+
+!H::
+	minimizeApplication()
+	Return
+
+!W::
+	closeApplicationOrInstance(processesWithExistingWindowControlSupport)
+	Return
+
+!T::
+	createApplicationOrInstance(processesWithExistingWindowControlSupport)
+	Return
+
+!N::
+	createApplication()
 	Return
 
 ;;;;;;;;;;;;;;;;;;;

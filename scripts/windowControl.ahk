@@ -4,6 +4,12 @@ closeApplication()
 	WinActivate
 }
 
+minimizeApplication()
+{
+	WinMinimize, A
+	WinActivate
+}
+
 ; WARNING
 ; The remaining of these lead to pretty buggy behavior alongside Jarvis for Windows
 
@@ -18,8 +24,8 @@ closeApplicationOrInstance(processesWithExistingWindowControlSupport)
 
 createApplication()
 {
-	WinGet, currentProcess, ProcessName, A
-	Run, %currentProcess%
+	Send ^n
+	Send {Alt}
 }
 
 createApplicationOrInstance(processesWithExistingWindowControlSupport)
