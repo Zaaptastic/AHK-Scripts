@@ -10,13 +10,10 @@ minimizeApplication()
 	WinActivate
 }
 
-; WARNING
-; The remaining of these lead to pretty buggy behavior alongside Jarvis for Windows
-
 closeApplicationOrInstance(processesWithExistingWindowControlSupport)
 {
 	WinGet, currentProcess, ProcessName, A
-	Send ^w
+	ControlSend, , {CtrlDown}w{CtrlUp}, A
 	Send {Alt}
 	if (!currentProcessIsInArray(currentProcess, processesWithExistingWindowControlSupport))
 		WinClose, A
@@ -24,15 +21,14 @@ closeApplicationOrInstance(processesWithExistingWindowControlSupport)
 
 createApplication()
 {
-	Send ^n
+	ControlSend, , {CtrlDown}n{CtrlUp}, A
 	Send {Alt}
 }
 
 createApplicationOrInstance(processesWithExistingWindowControlSupport)
 {
 	WinGet, currentProcess, ProcessName, A
-	Send ^t
-	Send {Alt}
+	ControlSend, , {CtrlDown}t{CtrlUp}, A
 	if (!currentProcessIsInArray(currentProcess, processesWithExistingWindowControlSupport))
 		Run, %currentProcess%
 }
