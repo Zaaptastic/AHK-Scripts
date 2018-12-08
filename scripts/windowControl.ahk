@@ -1,6 +1,7 @@
 closeApplication()
 {
 	WinClose, A
+	WinActivate
 }
 
 ; WARNING
