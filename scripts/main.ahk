@@ -4,16 +4,24 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%\..\tmp  ; Ensures a consistent starting directory
 #include %A_ScriptDir%\appDim.ahk
 #include %A_ScriptDir%\appMove.ahk
+#include %A_ScriptDir%\windowControl.ahk
 #EscapeChar `
 #CommentFlag ;
 
+;;;;;;;;;;;;;;;;;;;;;;;
 ; Environment Variables
-quickCommandtoggle:=false ; Used to toggle Quick Commands Menu
-SysGet, MonitorDimensions, MonitorWorkArea ; Used to obtain monitor width and height in pixels
-bufferZoneX := Floor(MonitorDimensionsRight * .05) ; Used to leave some space when moving windows
-bufferZoneY := Floor(MonitorDimensionsBottom * .05)
-appDimensionFilePath := "applicationDimensions.txt"
+;;;;;;;;;;;;;;;;;;;;;;;
+; Used to toggle Quick Commands Menu
+quickCommandtoggle:=false 
 
+; Used to obtain monitor width and height in pixels
+SysGet, MonitorDimensions, MonitorWorkArea
+; Used to leave some space when moving windows
+bufferZoneX := Floor(MonitorDimensionsRight * .05) 
+bufferZoneY := Floor(MonitorDimensionsBottom * .05)
+
+; Filepath used to store application Dimensions
+appDimensionFilePath := "applicationDimensions.txt" 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Displays hardcoded menu of possible options
@@ -58,7 +66,7 @@ appDimensionFilePath := "applicationDimensions.txt"
 
 	return
 	
-#^2::
+#!2::
 	setWinDim(appDimensionFilePath)
 	
 	return
@@ -71,7 +79,7 @@ appDimensionFilePath := "applicationDimensions.txt"
 	
 	return
 	
-#^Left::
+#!Left::
 	bufferLeft(bufferZoneX)
 
 	return	
@@ -81,13 +89,13 @@ appDimensionFilePath := "applicationDimensions.txt"
 
 	return
 	
-#^Right::
+#!Right::
 	bufferRight(MonitorDimensionsRight, bufferZoneX)
 
 	return	
 
-#!Left::
-#!Right::
+#^Left::
+#^Right::
 	centerHorizontal(MonitorDimensionsRight)
 
 	Return
@@ -97,7 +105,7 @@ appDimensionFilePath := "applicationDimensions.txt"
 
 	return	
 	
-#^Up::
+#!Up::
 	bufferUp(bufferZoneY)
 
 	return	
@@ -107,16 +115,27 @@ appDimensionFilePath := "applicationDimensions.txt"
 	
 	return
 	
-#^Down::
+#!Down::
 	bufferDown(MonitorDimensionsBottom, bufferZoneY)
 
 	return
 
-#!Up::
-#!Down::
+#^Up::
+#^Down::
 	centerVertical(MonitorDimensionsBottom)
 
 	Return
+
+;;;;;;;;;;;;;;;;;
+; Window Control
+;;;;;;;;;;;;;;;;;
+!Q::
+	closeApplication()
+	Return
+
+;;;;;;;;;;;;;;;;;;;
+; Clipboard Control
+;;;;;;;;;;;;;;;;;;;
 
 	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
