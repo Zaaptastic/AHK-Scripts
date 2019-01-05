@@ -141,15 +141,48 @@ processesWithExistingWindowControlSupport := ["chrome.exe", "sublime_text.exe"]
 	Return
 
 !W::
-	closeApplicationOrInstance(processesWithExistingWindowControlSupport)
+	Send ^w
+	Send {Alt}
 	Return
 
 !T::
-	createApplicationOrInstance(processesWithExistingWindowControlSupport)
+	Send ^t
+	Send {Alt}
 	Return
 
 !N::
-	createApplication()
+	Send ^n
+	Send {Alt}
+	Return
+
+!C::
+	Send ^c
+	Send {Alt}
+	Return
+
+!V::
+	Send ^v
+	Send {Alt}
+	Return
+
+!Z::
+	Send ^z
+	Send {Alt}
+	Return
+
+!S::
+	Send ^s
+	Send {Alt}
+	Return
+
+!R::
+	Send ^r
+	Send {Alt}
+	Return
+
+!X::
+	Send ^x
+	Send {Alt}
 	Return
 
 ;;;;;;;;;;;;;;;;;;;
