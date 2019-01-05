@@ -82,7 +82,7 @@ processesWithExistingWindowControlSupport := ["chrome.exe", "sublime_text.exe"]
 	
 	return
 	
-#!Left::
+#^Left::
 	bufferLeft(bufferZoneX)
 
 	return	
@@ -92,13 +92,13 @@ processesWithExistingWindowControlSupport := ["chrome.exe", "sublime_text.exe"]
 
 	return
 	
-#!Right::
+#^Right::
 	bufferRight(MonitorDimensionsRight, bufferZoneX)
 
 	return	
 
-#^Left::
-#^Right::
+#+Left::
+#+Right::
 	centerHorizontal(MonitorDimensionsRight)
 
 	Return
@@ -108,7 +108,7 @@ processesWithExistingWindowControlSupport := ["chrome.exe", "sublime_text.exe"]
 
 	return	
 	
-#!Up::
+#^Up::
 	bufferUp(bufferZoneY)
 
 	return	
@@ -118,13 +118,13 @@ processesWithExistingWindowControlSupport := ["chrome.exe", "sublime_text.exe"]
 	
 	return
 	
-#!Down::
+#^Down::
 	bufferDown(MonitorDimensionsBottom, bufferZoneY)
 
 	return
 
-#^Up::
-#^Down::
+#+Up::
+#+Down::
 	centerVertical(MonitorDimensionsBottom)
 
 	Return
@@ -155,6 +155,16 @@ processesWithExistingWindowControlSupport := ["chrome.exe", "sublime_text.exe"]
 	Send {Alt}
 	Return
 
+!+T::
+	Send ^+t
+	Send {Alt}
+	Return
+
+!+N::
+	Send ^+n
+	Send {Alt}
+	Return
+
 !C::
 	Send ^c
 	Send {Alt}
@@ -182,6 +192,26 @@ processesWithExistingWindowControlSupport := ["chrome.exe", "sublime_text.exe"]
 
 !X::
 	Send ^x
+	Send {Alt}
+	Return
+
+!O::
+	Send ^o
+	Send {Alt}
+	Return
+
+!LButton::
+	Send ^{Click}
+	Send {Alt}
+	Return
+
+#!Left::
+	Send ^+{Tab}
+	Send {Alt}
+	Return
+
+#!Right::
+	Send ^{Tab}
 	Send {Alt}
 	Return
 
