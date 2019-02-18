@@ -195,6 +195,11 @@ processesWithExistingWindowControlSupport := ["chrome.exe", "sublime_text.exe"]
 	Send {Alt}
 	Return
 
+!F::
+	Send ^f
+	Send {Alt}
+	Return
+
 !O::
 	Send ^o
 	Send {Alt}
