@@ -141,97 +141,103 @@ processesWithExistingWindowControlSupport := ["chrome.exe", "sublime_text.exe"]
 	Return
 
 !W::
+	Send {Alt Up}
 	Send ^w
-	Send {Alt}
 	Return
 
 !T::
+	Send {Alt Up}
 	Send ^t
-	Send {Alt}
 	Return
 
 !N::
+	Send {Alt Up}
 	Send ^n
-	Send {Alt}
 	Return
 
 !+T::
+	Send {Alt Up}
 	Send ^+t
-	Send {Alt}
 	Return
 
 !+N::
+	Send {Alt Up}
 	Send ^+n
-	Send {Alt}
 	Return
 
 !A::
+	Send {Alt Up}
 	Send ^a
-	Send {Alt}
 	Return
+
 !C::
+	Send {Alt Up}
 	Send ^c
-	Send {Alt}
 	Return
 
 !V::
+	Send {Alt Up}
 	Send ^v
-	Send {Alt}
 	Return
 
 !Z::
+	Send {Alt Up}
 	Send ^z
-	Send {Alt}
 	Return
 
 !S::
+	Send {Alt Up}
 	Send ^s
-	Send {Alt}
 	Return
 
 !R::
+	Send {Alt Up}
 	Send ^r
-	Send {Alt}
 	Return
 
 !X::
+	Send {Alt Up}
 	Send ^x
-	Send {Alt}
 	Return
 
 !F::
+	Send {Alt Up}
 	Send ^f
-	Send {Alt}
 	Return
 
 !O::
+	Send {Alt Up}
 	Send ^o
-	Send {Alt}
 	Return
 
 !U::
+	Send {Alt Up}
 	Send ^u
-	Send {Alt}
 	Return
 
 !I::
+	Send {Alt Up}
 	Send ^i
-	Send {Alt}
 	Return
 
 !LButton::
+	Send {Alt Up}
 	Send ^{Click}
-	Send {Alt}
 	Return
 
 #!Left::
+	Send {Alt Up}
 	Send ^+{Tab}
-	Send {Alt}
 	Return
 
 #!Right::
+	Send {Alt Up}
 	Send ^{Tab}
-	Send {Alt}
+	Return
+
+!Space::
+	Send {Alt Up}
+	Send {LWin Down}s{LWin Up}
 	Return
 
 ;;;;;;;;;;;;;;;;;;;
