@@ -235,11 +235,6 @@ processesWithExistingWindowControlSupport := ["chrome.exe", "sublime_text.exe"]
 	Send ^{Tab}
 	Return
 
-!Space::
-	Send {Alt Up}
-	Send {LWin Down}s{LWin Up}
-	Return
-
 ;;;;;;;;;;;;;;;;;;;
 ; Clipboard Control
 ;;;;;;;;;;;;;;;;;;;
