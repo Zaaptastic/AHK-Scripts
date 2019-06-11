@@ -235,6 +235,15 @@ processesWithExistingWindowControlSupport := ["chrome.exe", "sublime_text.exe"]
 	Send ^{Tab}
 	Return
 
+!Space::
+	WinActivate, ahk_class Shell_TrayWnd
+    Send #s
+    return
+
+#Space::
+    Send #S
+    return
+
 ;;;;;;;;;;;;;;;;;;;
 ; Clipboard Control
 ;;;;;;;;;;;;;;;;;;;
